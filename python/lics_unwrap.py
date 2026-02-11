@@ -497,7 +497,7 @@ def process_ifg_pair(phatif, cohtif, procpairdir = os.getcwd(), landmask_tif = N
         defomax = 0.6, frame = '', hgtcorr = False, gacoscorr = True, pre_detrend = True,
         cliparea_geo = None, outtif = None, prevest = None, prev_ramp = None,
         coh2var = False, add_resid = True,  rampit=False, subtract_gacos = False,
-        extweights = None, keep_coh_debug = True, keep_coh_px = 0.25, use_gamma = False):
+        extweights = None, keep_coh_debug = True, keep_coh_px = 0.25, use_gamma = False, filtcoh_thres=0.45):
     """Process pair data from their geotiffs (phase and coherence)
     Args:
         phatif (string): path to the input wrapped interferogram geotiff (recommended unfiltered version)
@@ -2002,7 +2002,7 @@ def load_from_nparrays(inpha,incoh,maskthres = 0.05):
     return ifg
 
 
-def load_from_tifs(phatif, cohtif, magtif = None, landmask_tif = None, cliparea_geo = None, checkfiltcoh=True):
+def load_from_tifs(phatif, cohtif, magtif = None, landmask_tif = None, cliparea_geo = None, checkfiltcoh=True, filtcoh_thres=filtcoh_thres):
     inpha = load_tif2xr(phatif, fixnanzero=True)
     incoh = load_tif2xr(cohtif)
     if incoh.max() > 2:
@@ -2020,7 +2020,7 @@ def load_from_tifs(phatif, cohtif, magtif = None, landmask_tif = None, cliparea_
         filtcoh = cohtif.replace('geo.cc.tif', 'geo.filt.cc.tif')
         if os.path.exists(filtcoh):
             filtcoh = load_tif2xr(filtcoh)
-            filtcoh_thres=0.45
+            #filtcoh_thres=0.45 # Change to value in function
             print('filt.cc file found - using it for masking (using thres of ' + str(filtcoh_thres) + ')')
             if filtcoh.max() > 2:
                 filtcoh.values = filtcoh.values/255
