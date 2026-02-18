@@ -2002,7 +2002,7 @@ def load_from_nparrays(inpha,incoh,maskthres = 0.05):
     return ifg
 
 
-def load_from_tifs(phatif, cohtif, magtif = None, landmask_tif = None, cliparea_geo = None, checkfiltcoh=True, filtcoh_thres=filtcoh_thres):
+def load_from_tifs(phatif, cohtif, magtif = None, landmask_tif = None, cliparea_geo = None, checkfiltcoh=True, filtcoh_thres=0.45):
     inpha = load_tif2xr(phatif, fixnanzero=True)
     incoh = load_tif2xr(cohtif)
     if incoh.max() > 2:
